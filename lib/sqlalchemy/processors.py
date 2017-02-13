@@ -124,32 +124,4 @@ def py_fallback():
     str_to_date = str_to_datetime_processor_factory(DATE_RE, datetime.date)
     return locals()
 
-try:
-    from sqlalchemy.cprocessors import UnicodeResultProcessor, \
-        DecimalResultProcessor, \
-        to_float, to_str, int_to_boolean, \
-        str_to_datetime, str_to_time, \
-        str_to_date
-
-    def to_unicode_processor_factory(encoding, errors=None):
-        if errors is not None:
-            return UnicodeResultProcessor(encoding, errors).process
-        else:
-            return UnicodeResultProcessor(encoding).process
-
-    def to_conditional_unicode_processor_factory(encoding, errors=None):
-        if errors is not None:
-            return UnicodeResultProcessor(encoding, errors).conditional_process
-        else:
-            return UnicodeResultProcessor(encoding).conditional_process
-
-    def to_decimal_processor_factory(target_class, scale):
-        # Note that the scale argument is not taken into account for integer
-        # values in the C implementation while it is in the Python one.
-        # For example, the Python implementation might return
-        # Decimal('5.00000') whereas the C implementation will
-        # return Decimal('5'). These are equivalent of course.
-        return DecimalResultProcessor(target_class, "%%.%df" % scale).process
-
-except ImportError:
-    globals().update(py_fallback())
+globals().update(py_fallback())

@@ -71,7 +71,7 @@ class Distribution(_Distribution):
         # Wheel package when building a wheel without C support. This will
         # ensure that Wheel knows to treat us as if the build output is
         # platform specific.
-        return True
+        return False
 
 
 class PyTest(TestCommand):
@@ -123,10 +123,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as r_file:
 
 def run_setup(with_cext):
     kwargs = {}
-    if with_cext:
-        kwargs['ext_modules'] = ext_modules
-    else:
-        kwargs['ext_modules'] = []
+    kwargs['ext_modules'] = []
 
     setup(
         name="SQLAlchemy",
